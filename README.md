@@ -23,6 +23,8 @@ cd currency-conversion
 
 ### 2️⃣ Install Dependencies
 
+Copy `.env.sample` and rename it to `.env`
+
 ```sh
 npm install
 ```
@@ -47,4 +49,13 @@ brew services start postgressql
 
 ```sh
 npm run start:dev
+```
+
+### Example Request
+
+```
+curl -X GET "http://localhost:3000/currency/exchange-rate?from=USD&to=BTC&amount=220"
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxMjM0NSIsImVtYWlsIjoidXNlckBleGFtcGxlLmNvbSIsImlhdCI6MTcxMDAwMDAwMCwiZXhwIjoxNzEwNjAwMDAwfQ.3qZGu2mXHdFfs0M5GcrB9LnNBH6L0Ypc8fZTnNfXpFY"
+  -H "Content-Type: application/json"
+
 ```

@@ -2,10 +2,10 @@ import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { CurrencyService } from './currency.service';
 import { Currency, CurrencyPipe, ExchangeRateOutput, ExchangeRateOutputDto, ParseNumberPipe } from './currency.entity';
-import { IdentityInterceptor } from 'src/interceptors/identity.interceptor';
-import { ContextInterceptor } from 'src/interceptors/context.interceptor';
-import { ContextDecorator } from 'src/decorators/context.decorator';
-import { Context } from 'src/entities/context.entity';
+import { IdentityInterceptor } from '../interceptors/identity.interceptor';
+import { ContextInterceptor } from '../interceptors/context.interceptor';
+import { ContextDecorator } from '../decorators/context.decorator';
+import { Context } from '../entities/context.entity';
 
 @Controller({
   path: 'currency',

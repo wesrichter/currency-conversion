@@ -8,8 +8,8 @@ import {
 } from '@nestjs/common';
 import { decode } from 'jsonwebtoken';
 import * as moment from 'moment';
-import { AuthenticatedRequest } from 'src/entities/authenticated-request.entity';
-import { RedisClient } from 'src/clients/redis/redis.client';
+import { AuthenticatedRequest } from '../entities/authenticated-request.entity';
+import { RedisClient } from '../clients/redis/redis.client';
 
 @Injectable()
 export class IdentityInterceptor implements NestInterceptor {

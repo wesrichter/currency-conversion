@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Currency, ExchangeRateOutput } from './currency.entity';
-import { CoinbaseClient } from 'src/clients/coinbase/coinbase.client';
-import { Context } from 'src/entities/context.entity';
+import { CoinbaseClient } from '../clients/coinbase/coinbase.client';
+import { Context } from '../entities/context.entity';
 import Decimal from 'decimal.js';
 
 @Injectable()
