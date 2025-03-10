@@ -30,10 +30,15 @@ export class ParseNumberPipe implements PipeTransform {
   }
 }
 
+const ExchangeRateAmountSchema = z.object({
+  amount: z.string(),
+  currency: z.nativeEnum(Currency),
+  rate: z.string(),
+});
+
 const ExchangeRateOutputSchema = z.object({
-  from: z.nativeEnum(Currency),
-  to: z.nativeEnum(Currency),
-  amount: z.number(),
+  from: ExchangeRateAmountSchema,
+  to: ExchangeRateAmountSchema,
 });
 
 export type ExchangeRateOutput = z.infer<typeof ExchangeRateOutputSchema>;

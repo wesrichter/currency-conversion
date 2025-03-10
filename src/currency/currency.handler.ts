@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseInterceptors } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { CurrencyService } from './currency.service';
-import { Currency, CurrencyPipe, ExchangeRateOutputDto, ParseNumberPipe } from './currency.entity';
+import { Currency, CurrencyPipe, ExchangeRateOutput, ExchangeRateOutputDto, ParseNumberPipe } from './currency.entity';
 import { IdentityInterceptor } from 'src/interceptors/identity.interceptor';
 import { ContextInterceptor } from 'src/interceptors/context.interceptor';
 import { ContextDecorator } from 'src/decorators/context.decorator';
@@ -25,7 +25,7 @@ export class CurrencyController {
     @Query('from', CurrencyPipe) from: Currency,
     @Query('to', CurrencyPipe) to: Currency,
     @Query('amount', ParseNumberPipe) amount: string,
-  ): Promise<any> {
+  ): Promise<ExchangeRateOutput> {
     return this.currency.getExchangeRate(ctx, { from, to, amount });
   }
 }

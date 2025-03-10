@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Currency } from './currency.entity';
+import { Currency, ExchangeRateOutput } from './currency.entity';
 import { CoinbaseClient } from 'src/clients/coinbase/coinbase.client';
 import { Context } from 'src/entities/context.entity';
 import Decimal from 'decimal.js';
@@ -8,7 +8,10 @@ import Decimal from 'decimal.js';
 export class CurrencyService {
   constructor(private readonly coinbase: CoinbaseClient) {}
 
-  async getExchangeRate(ctx: Context, { from, to, amount }: { from: Currency; to: Currency; amount: string }) {
+  async getExchangeRate(
+    ctx: Context,
+    { from, to, amount }: { from: Currency; to: Currency; amount: string },
+  ): Promise<ExchangeRateOutput> {
     this.validateExchangeRate({ from, to });
 
     const {
@@ -19,7 +22,18 @@ export class CurrencyService {
     const rate = new Decimal(exchangeRates[to]);
     const conversion = exchangeAmount.times(rate);
 
-    return { from: exchangeRates[from], to: exchangeRates[to], amount: conversion.toString() };
+    return {
+      from: {
+        amount,
+        currency: from,
+        rate: exchangeRates[from],
+      },
+      to: {
+        amount: conversion.toString(),
+        currency: to,
+        rate: exchangeRates[to],
+      },
+    };
   }
 
   private validateExchangeRate({ from, to }: { from: Currency; to: Currency }): void {
