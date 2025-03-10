@@ -44,6 +44,19 @@ export class IdentityInterceptor implements NestInterceptor {
     }
   }
 
+  /**
+   * Enforces a daily request limit per user using Redis.
+   *
+   * Why Redis?
+   * - Redis is used for its high-speed read/write capabilities, making it ideal for tracking request counts in real-time.
+   * - It provides an efficient way to store and increment counters with an expiration time, ensuring data is automatically reset daily.
+   * - Using Redis avoids the overhead of querying a database for rate-limiting checks, improving performance and scalability.
+   *
+   * Why in the IdentityInterceptor?
+   * - The `IdentityInterceptor` is executed early in the request lifecycle, ensuring rate limiting is applied before any business logic is processed.
+   * - This prevents unnecessary processing if a user has already exceeded their request limit.
+   * - Since the interceptor also handles authentication, it ensures that rate limiting is tied to a valid user ID extracted from the token.
+   */
   private async checkRequestLimit(userId: string) {
     const currentDate = moment().format('YYYY-MM-DD');
     const redisKey = `request-count:${userId}:${currentDate}`;
