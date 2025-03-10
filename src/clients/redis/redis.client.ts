@@ -1,12 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { createClient } from 'redis';
+import { ConfigService } from '@nestjs/config';
+import { createClient, RedisClientType } from 'redis';
 
 @Injectable()
 export class RedisClient {
-  private client = createClient({ url: 'redis://localhost:6379' });
+  private client: RedisClientType;
 
-  constructor() {
-    this.client.connect();
+  constructor(private readonly configService: ConfigService) {
+    const redisUrl = this.configService.get<string>('REDIS_URL', 'redis://localhost:6379');
+    this.client = createClient({ url: redisUrl });
+
+    this.client.on('error', (err) => {
+      console.error('Redis Client Error', err);
+    });
+  }
+
+  async onModuleInit() {
+    await this.client.connect();
+  }
+
+  async onModuleDestroy() {
+    await this.client.quit();
   }
 
   async get(key: string): Promise<string | null> {
